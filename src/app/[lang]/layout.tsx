@@ -1,9 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
 import { Public_Sans, Source_Serif_4 } from "next/font/google";
 import "../globals.css";
 import { CrisisBar, SiteHeader, SiteFooter } from "@/components/site";
+import { PWARegister } from "@/components/pwa-register";
 import { getDictionary, isLocale, locales } from "@/lib/i18n";
+
+export const viewport: Viewport = {
+  themeColor: "#1c507e",
+};
 
 const publicSans = Public_Sans({ variable: "--font-public-sans", subsets: ["latin"], display: "swap" });
 const sourceSerif = Source_Serif_4({ variable: "--font-source-serif", subsets: ["latin"], weight: ["600"], display: "swap" });
@@ -21,6 +26,12 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       template: `%s · ${dict.common.siteName} ${dict.common.siteCity}`,
     },
     description: dict.home.subtitle,
+    manifest: "/manifest.webmanifest",
+    icons: {
+      icon: [{ url: "/icon.svg", type: "image/svg+xml" }, { url: "/favicon.ico" }],
+      apple: "/apple-touch-icon.png",
+    },
+    appleWebApp: { capable: true, title: "Homecoming", statusBarStyle: "default" },
   };
 }
 
@@ -37,6 +48,7 @@ export default async function LangLayout({
     <html lang={lang} className={`${publicSans.variable} ${sourceSerif.variable} h-full`}>
       <body className="flex min-h-full flex-col">
         <a href="#main" className="skip-link">{dict.common.skipToContent}</a>
+        <PWARegister offlineText={dict.common.offline} />
         <CrisisBar lang={lang} dict={dict} />
         <SiteHeader lang={lang} dict={dict} />
         <div id="main" className="flex-1">{children}</div>

@@ -33,6 +33,7 @@ export const es: Dict = {
     browseByCategory: "Buscar por categoría",
     place: "lugar",
     places: "lugares",
+    offline: "Estás sin conexión — mostrando información guardada",
   },
   search: {
     label: "¿Qué necesitas?",

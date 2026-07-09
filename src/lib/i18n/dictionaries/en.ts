@@ -30,6 +30,7 @@ export const en = {
     browseByCategory: "Browse by category",
     place: "place",
     places: "places",
+    offline: "You're offline — showing saved information",
   },
   search: {
     label: "What do you need?",
