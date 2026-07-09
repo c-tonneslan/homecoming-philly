@@ -129,6 +129,13 @@ export const en = {
       button: "Email a correction",
       note: "Reports go to a person, not a database. We don't need to know who you are.",
     },
+    place: {
+      back: "Back",
+      categoriesLabel: "Categories",
+      forOrgsTitle: "Are you this organization?",
+      forOrgsBody: "Homecoming is an independent community directory — we list public services to help people find them. If this listing is wrong, out of date, or you'd like it corrected or taken down, just tell us and we'll fix it fast.",
+      forOrgsButton: "Correct or remove this listing",
+    },
   },
 };
 

@@ -34,19 +34,28 @@ export function CategoryTile({ category, lang }: { category: Category; lang: Loc
 }
 
 export function ListingCard({
-  listing, dict, lang, showWhatToDo = true,
+  listing, dict, lang, showWhatToDo = true, linkTitle = true,
 }: {
   listing: Listing;
   dict: Dict;
   lang: Locale;
   showWhatToDo?: boolean;
+  linkTitle?: boolean;
 }) {
   const c = dict.common;
   const e = listing.eligibility;
   return (
     <article className="rounded-md border border-line-strong bg-paper-raised p-5">
       <div className="flex items-start justify-between gap-3">
-        <h3 className="font-serif text-[20px] font-semibold text-ink">{listing.name}</h3>
+        <h3 className="font-serif text-[20px] font-semibold text-ink">
+          {linkTitle ? (
+            <Link href={path(lang, `/place/${listing.id}`)} className="text-ink no-underline hover:underline">
+              {listing.name}
+            </Link>
+          ) : (
+            listing.name
+          )}
+        </h3>
         {listing.alwaysOpen && (
           <Tag tone="good"><Icon name="clock" size={14} /> {c.open247}</Tag>
         )}

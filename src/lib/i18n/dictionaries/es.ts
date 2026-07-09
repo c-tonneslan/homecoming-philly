@@ -132,5 +132,12 @@ export const es: Dict = {
       button: "Enviar una corrección por correo",
       note: "Los reportes van a una persona, no a una base de datos. No necesitamos saber quién eres.",
     },
+    place: {
+      back: "Atrás",
+      categoriesLabel: "Categorías",
+      forOrgsTitle: "¿Es esta tu organización?",
+      forOrgsBody: "Homecoming es un directorio comunitario independiente — mostramos servicios públicos para ayudar a las personas a encontrarlos. Si este lugar está mal, desactualizado, o quieres que lo corrijamos o lo quitemos, solo avísanos y lo arreglamos rápido.",
+      forOrgsButton: "Corregir o quitar este lugar",
+    },
   },
 };
