@@ -48,6 +48,7 @@ export interface Listing {
   cost?: string;
   whatToBring?: string;
   website?: string;
+  keywords?: string[]; // plain-language terms people actually search
   source: { name: string; url: string };
   // Honest verification state. `verified` means a human confirmed it against the
   // source on `lastVerified`; `pending` means it is seeded and awaiting review.
