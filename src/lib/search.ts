@@ -31,12 +31,34 @@ const SYNONYMS: Record<string, CategoryId[]> = {
   bus: ["transportation"], transit: ["transportation"], septa: ["transportation"],
   ride: ["transportation"], fare: ["transportation"], token: ["transportation"],
   transportation: ["transportation"], pass: ["transportation"],
+  // Spanish (keys are accent-folded to match norm())
+  cama: ["housing"], dormir: ["housing"], refugio: ["housing"], vivienda: ["housing"],
+  casa: ["housing"], albergue: ["housing"],
+  naloxona: ["crisis"], sobredosis: ["crisis"], suicidio: ["crisis"], drogas: ["crisis", "behavioral"],
+  comida: ["food"], comer: ["food"], hambre: ["food"], despensa: ["food"], alimentos: ["food"],
+  estampillas: ["benefits", "food"], efectivo: ["benefits"], beneficios: ["benefits"],
+  identificacion: ["id"], licencia: ["id"], nacimiento: ["id"], documentos: ["id"],
+  trabajo: ["jobs"], empleo: ["jobs"], capacitacion: ["jobs"],
+  clinica: ["healthcare"], salud: ["healthcare"], medico: ["healthcare"], medicina: ["healthcare"],
+  abogado: ["legal"], antecedente: ["legal"], perdon: ["legal"],
+  consejeria: ["behavioral"], terapia: ["behavioral"], recuperacion: ["behavioral"],
+  adiccion: ["behavioral"], tratamiento: ["behavioral"], sobrio: ["behavioral"],
+  autobus: ["transportation"], transporte: ["transportation"], pasaje: ["transportation"],
 };
 
-const STOP = new Set(["a", "an", "the", "i", "need", "get", "for", "to", "my", "me", "some", "any", "help", "want", "find", "near"]);
+const STOP = new Set([
+  "a", "an", "the", "i", "need", "get", "for", "to", "my", "me", "some", "any", "want", "find", "near",
+  "un", "una", "el", "la", "los", "las", "de", "para", "necesito", "tengo", "quiero", "mi", "cerca", "busco", "un",
+]);
 
 function norm(s: string): string {
-  return s.toLowerCase().replace(/[^a-z0-9\s]/g, " ").replace(/\s+/g, " ").trim();
+  return s
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "") // fold accents so "identificación" == "identificacion"
+    .replace(/[^a-z0-9\s]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 export interface SearchResult {

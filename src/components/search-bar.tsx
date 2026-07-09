@@ -3,8 +3,18 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Icon } from "@/lib/icons";
+import { type Locale, path } from "@/lib/i18n";
 
-export function SearchBar({ initial = "", autoFocus = false }: { initial?: string; autoFocus?: boolean }) {
+export function SearchBar({
+  lang, label, placeholder, button, initial = "", autoFocus = false,
+}: {
+  lang: Locale;
+  label: string;
+  placeholder: string;
+  button: string;
+  initial?: string;
+  autoFocus?: boolean;
+}) {
   const router = useRouter();
   const [q, setQ] = useState(initial);
 
@@ -14,12 +24,10 @@ export function SearchBar({ initial = "", autoFocus = false }: { initial?: strin
       onSubmit={(e) => {
         e.preventDefault();
         const v = q.trim();
-        if (v) router.push(`/search?q=${encodeURIComponent(v)}`);
+        if (v) router.push(`${path(lang, "/search")}?q=${encodeURIComponent(v)}`);
       }}
     >
-      <label htmlFor="site-search" className="block text-[15px] font-semibold text-ink">
-        What do you need?
-      </label>
+      <label htmlFor="site-search" className="block text-[15px] font-semibold text-ink">{label}</label>
       <div className="mt-1.5 flex items-stretch gap-2">
         <div className="flex flex-1 items-center gap-2 rounded-md border border-line-strong bg-paper-raised px-3 focus-within:border-primary focus-within:ring-2 focus-within:ring-accent/40">
           <Icon name="search" size={20} className="shrink-0 text-ink-faint" />
@@ -32,16 +40,17 @@ export function SearchBar({ initial = "", autoFocus = false }: { initial?: strin
             autoFocus={autoFocus}
             value={q}
             onChange={(e) => setQ(e.target.value)}
-            placeholder="a bed tonight, food, an ID…"
+            placeholder={placeholder}
             className="w-full bg-transparent py-3 text-[17px] text-ink outline-none placeholder:text-ink-faint"
           />
         </div>
         <button
           type="submit"
+          aria-label={button}
           className="inline-flex min-h-[48px] items-center gap-2 rounded-md bg-primary px-4 font-semibold text-primary-fg hover:bg-primary-hover"
         >
           <Icon name="search" size={18} className="sm:hidden" />
-          <span className="hidden sm:inline">Search</span>
+          <span className="hidden sm:inline">{button}</span>
         </button>
       </div>
     </form>

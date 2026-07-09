@@ -2,24 +2,23 @@ import Link from "next/link";
 import type { Category, Listing } from "@/lib/types";
 import { Icon, type IconName } from "@/lib/icons";
 import { Button, Tag, VerifiedStamp } from "./ui";
+import type { Dict } from "@/lib/i18n";
+import { type Locale, path } from "@/lib/i18n";
 
-// Category → its one stable icon (used everywhere the category appears).
 const CATEGORY_ICON: Record<string, IconName> = {
   crisis: "crisis", housing: "housing", food: "food", id: "id", jobs: "jobs",
   healthcare: "healthcare", benefits: "benefits", legal: "legal",
   behavioral: "behavioral", transportation: "transportation",
 };
 
-export function CategoryTile({ category }: { category: Category }) {
-  const href = category.id === "crisis" ? "/help-now" : `/browse/${category.id}`;
+export function CategoryTile({ category, lang }: { category: Category; lang: Locale }) {
+  const href = path(lang, category.id === "crisis" ? "/help-now" : `/browse/${category.id}`);
   const crisis = category.tier === "crisis";
   return (
     <Link
       href={href}
       className={`group flex items-start gap-3 rounded-md border p-4 no-underline transition-colors ${
-        crisis
-          ? "border-accent/40 bg-accent/[0.06] hover:border-accent"
-          : "border-line-strong bg-paper-raised hover:border-primary"
+        crisis ? "border-accent/40 bg-accent/[0.06] hover:border-accent" : "border-line-strong bg-paper-raised hover:border-primary"
       }`}
     >
       <span className={`mt-0.5 shrink-0 ${crisis ? "text-accent" : "text-primary"}`}>
@@ -34,14 +33,22 @@ export function CategoryTile({ category }: { category: Category }) {
   );
 }
 
-export function ListingCard({ listing, showWhatToDo = true }: { listing: Listing; showWhatToDo?: boolean }) {
+export function ListingCard({
+  listing, dict, lang, showWhatToDo = true,
+}: {
+  listing: Listing;
+  dict: Dict;
+  lang: Locale;
+  showWhatToDo?: boolean;
+}) {
+  const c = dict.common;
   const e = listing.eligibility;
   return (
     <article className="rounded-md border border-line-strong bg-paper-raised p-5">
       <div className="flex items-start justify-between gap-3">
         <h3 className="font-serif text-[20px] font-semibold text-ink">{listing.name}</h3>
         {listing.alwaysOpen && (
-          <Tag tone="good"><Icon name="clock" size={14} /> Open 24/7</Tag>
+          <Tag tone="good"><Icon name="clock" size={14} /> {c.open247}</Tag>
         )}
       </div>
 
@@ -49,17 +56,17 @@ export function ListingCard({ listing, showWhatToDo = true }: { listing: Listing
 
       {showWhatToDo && listing.whatToDoNow && (
         <p className="mt-3 rounded-md border-l-4 border-accent bg-accent/[0.06] py-2 pl-3 pr-2 text-[16px] leading-relaxed text-ink">
-          <span className="font-semibold">What to do now: </span>{listing.whatToDoNow}
+          <span className="font-semibold">{c.whatToDoNow} </span>{listing.whatToDoNow}
         </p>
       )}
 
       {(e || listing.languages || listing.cost) && (
         <div className="mt-3 flex flex-wrap gap-2">
           {listing.cost && <Tag>{listing.cost}</Tag>}
-          {e?.recordFriendly && <Tag tone="good"><Icon name="check" size={14} /> Serves people with records</Tag>}
-          {e?.idRequired === false && <Tag tone="good">No ID needed</Tag>}
-          {e?.idRequired === true && <Tag>ID usually required</Tag>}
-          {e?.paroleOk && <Tag tone="good">Parole/probation OK</Tag>}
+          {e?.recordFriendly && <Tag tone="good"><Icon name="check" size={14} /> {c.servesRecords}</Tag>}
+          {e?.idRequired === false && <Tag tone="good">{c.noIdNeeded}</Tag>}
+          {e?.idRequired === true && <Tag>{c.idRequired}</Tag>}
+          {e?.paroleOk && <Tag tone="good">{c.paroleOk}</Tag>}
           {listing.languages?.map((l) => <Tag key={l}><Icon name="globe" size={14} /> {l}</Tag>)}
         </div>
       )}
@@ -73,7 +80,7 @@ export function ListingCard({ listing, showWhatToDo = true }: { listing: Listing
         )}
         <div className="flex gap-2">
           <dt className="mt-0.5 shrink-0 text-ink-faint"><Icon name="clock" size={17} /></dt>
-          <dd>{listing.hours ?? "Call to confirm hours"}</dd>
+          <dd>{listing.hours ?? c.callToConfirmHours}</dd>
         </div>
       </dl>
 
@@ -81,30 +88,36 @@ export function ListingCard({ listing, showWhatToDo = true }: { listing: Listing
         <div className="mt-4 flex flex-wrap gap-2">
           {listing.phone && (
             <Button href={`tel:${listing.phone.replace(/[^\d+]/g, "")}`}>
-              <Icon name="phone" size={18} /> Call {listing.phone}
+              <Icon name="phone" size={18} /> {c.call} {listing.phone}
             </Button>
           )}
           {listing.text && (
             <Button href={`sms:${listing.text}`} variant="secondary">
-              <Icon name="message" size={18} /> Text {listing.text}
+              <Icon name="message" size={18} /> {c.text} {listing.text}
             </Button>
           )}
           {listing.website && (
             <Button href={listing.website} variant="secondary">
-              <Icon name="external" size={17} /> Website
+              <Icon name="external" size={17} /> {c.website}
             </Button>
           )}
         </div>
       )}
 
       <div className="mt-4 flex flex-wrap items-center justify-between gap-2 border-t border-line pt-3">
-        <VerifiedStamp status={listing.status} date={listing.lastVerified} />
+        <VerifiedStamp
+          status={listing.status}
+          date={listing.lastVerified}
+          verifiedLabel={c.verifiedOn}
+          beingLabel={c.beingVerified}
+          locale={lang}
+        />
         <div className="flex items-center gap-4 text-[13px]">
           <a href={listing.source.url} target="_blank" rel="noreferrer" className="text-ink-faint hover:text-ink">
-            Source: {listing.source.name}
+            {c.source}: {listing.source.name}
           </a>
-          <Link href={`/report?listing=${listing.id}`} className="inline-flex items-center gap-1 text-ink-faint hover:text-ink">
-            <Icon name="flag" size={14} /> Report a problem
+          <Link href={path(lang, `/report?listing=${listing.id}`)} className="inline-flex items-center gap-1 text-ink-faint hover:text-ink">
+            <Icon name="flag" size={14} /> {c.reportProblem}
           </Link>
         </div>
       </div>

@@ -46,18 +46,28 @@ export function Tag({ children, tone = "neutral" }: { children: ReactNode; tone?
 }
 
 // The product's core trust signal.
-export function VerifiedStamp({ status, date }: { status: "verified" | "pending"; date?: string }) {
+export function VerifiedStamp({
+  status, date, verifiedLabel, beingLabel, locale,
+}: {
+  status: "verified" | "pending";
+  date?: string;
+  verifiedLabel: string;
+  beingLabel: string;
+  locale: string;
+}) {
   if (status === "verified" && date) {
-    const d = new Date(date + "T00:00:00").toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+    const d = new Date(date + "T00:00:00").toLocaleDateString(locale === "es" ? "es-US" : "en-US", {
+      month: "short", day: "numeric", year: "numeric",
+    });
     return (
       <span className="inline-flex items-center gap-1.5 text-[13px] text-success">
-        <Icon name="check" size={15} /> Verified {d}
+        <Icon name="check" size={15} /> {verifiedLabel} {d}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center gap-1.5 text-[13px] text-ink-faint">
-      <Icon name="info" size={15} /> Being verified — call to confirm
+      <Icon name="info" size={15} /> {beingLabel}
     </span>
   );
 }
