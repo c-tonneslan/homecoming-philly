@@ -18,8 +18,8 @@
   --primary: #1c507e;      /* clean, confident civic blue */
   --primary-hover: #16406a;
   --primary-fg: #ffffff;
-  --accent: #b85a34;       /* warm terracotta — emphasis, focus, crisis warmth */
-  --danger: #a32c22;
+  --accent: #cf4c3a;       /* deep coral — emphasis, focus, crisis */
+  --danger: #99231b;       /* deeper red for errors, distinct from the coral accent */
   --danger-bg: #fbeceb;
   --success: #1f6b3a;
 }
