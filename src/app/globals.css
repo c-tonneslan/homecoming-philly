@@ -8,19 +8,19 @@
 */
 
 :root {
-  --paper: #f7f5f1;        /* warm off-white, cuts glare, reads as paper */
-  --paper-raised: #fffdf9;
-  --ink: #1b1b1b;          /* near-black, avoids halation of pure #000 */
-  --ink-soft: #46423d;
-  --ink-faint: #6b665f;
-  --line: #e5e1d8;         /* hairline border */
-  --line-strong: #d3cec3;
-  --primary: #1b4b73;      /* deep institutional blue (USWDS grade ~60) */
-  --primary-hover: #143a5a;
+  --paper: #faf8f4;        /* clean warm off-white — light, not dingy */
+  --paper-raised: #ffffff; /* crisp white cards for real elevation */
+  --ink: #1c1a17;          /* warm near-black, avoids pure-#000 halation */
+  --ink-soft: #4a443d;
+  --ink-faint: #6b6259;
+  --line: #ece8e1;         /* hairline border */
+  --line-strong: #dbd5cb;
+  --primary: #1c507e;      /* clean, confident civic blue */
+  --primary-hover: #16406a;
   --primary-fg: #ffffff;
-  --accent: #9a6a12;       /* muted gold — emphasis + focus ring, never a glow */
-  --danger: #9e2020;
-  --danger-bg: #fbecec;
+  --accent: #b85a34;       /* warm terracotta — emphasis, focus, crisis warmth */
+  --danger: #a32c22;
+  --danger-bg: #fbeceb;
   --success: #1f6b3a;
 }
 
